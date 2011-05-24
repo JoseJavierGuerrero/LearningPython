@@ -16,7 +16,7 @@ if __name__ == '__main__':
 	numberList = [1, 2, 3, 4, 5,]
 	print numberList
 	print 'Let\'s map str function to it:'
-	stringListOdd = map(str, numberList)
+	stringList = map(str, numberList)
 	print stringList
 	print 'Now, what about factorials?:'
 	from math import factorial
