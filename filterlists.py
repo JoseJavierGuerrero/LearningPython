@@ -2,6 +2,11 @@
 # encoding: utf-8
 
 def map(function, list, condition=lambda x: True):
+	"""
+	Aplies function to each element of list if they satisfy the condition.
+	
+	Returns a filtered list with function aplied to all elements.
+	"""
 	return [function(element) for element in list if condition(element)]
 
 if __name__ == '__main__':
