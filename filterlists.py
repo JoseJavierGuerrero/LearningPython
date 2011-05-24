@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # encoding: utf-8
 
+
 def map(function, list, condition=lambda x: True):
 	"""
 	Aplies function to each element of list if they satisfy the condition.
@@ -8,6 +9,7 @@ def map(function, list, condition=lambda x: True):
 	Returns a filtered list with function aplied to all elements.
 	"""
 	return [function(element) for element in list if condition(element)]
+
 
 if __name__ == '__main__':
 	print 'We have a list of numbers:'	
@@ -23,3 +25,4 @@ if __name__ == '__main__':
 	print 'Let\'s take those wich are greater than 3'
 	greaterThan3List = map(lambda x:x, numberList, lambda x : x > 3)
 	print greaterThan3List
+

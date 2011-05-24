@@ -2,6 +2,11 @@
 # encoding: utf-8
 
 def person(name='Edgar', age=18):
+	""" Prints a string using "name" and "age"
+	
+	
+	Returns None.
+	"""
 	print name + ' is ' + str(age)
 
 
