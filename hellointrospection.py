@@ -3,9 +3,6 @@
 
 import os
 
-import apihelper
-import filterlists
-
 def info(object):
     """Prints methods, atributes and doc strings."""
     
@@ -45,15 +42,14 @@ def nameAndDoc(object, method):
     return name(object, method) + doc(object, method)
     
 def name(object, method):
-    return str(getattr(object, metohd).__name__)
+    return str(getattr(object, method).__name__)
     
 def doc(object, method):
     return str(getattr(object, method).__doc__)
     
 if __name__ == '__main__':
-    #info(apihelper)
+    info(os)
     #info(1)
     #info((1,))
     #info([])
     #info({})
-    
