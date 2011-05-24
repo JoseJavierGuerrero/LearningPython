@@ -25,4 +25,6 @@ if __name__ == '__main__':
 	print 'Let\'s take those wich are greater than 3'
 	greaterThan3List = map(lambda x:x, numberList, lambda x : x > 3)
 	print greaterThan3List
+	print 'Factorials multiples of four?'
+	multiplesOf4 = map(lambda x:x, factorialList, lambda x : x % 4 == 0)
 
