@@ -7,7 +7,7 @@ def helloStrings(param):
 	Returns string.
 	"""
 	
-	string = "".join([elem for elem in param.values()])
+	string = " ".join([elem for elem in param.values()])
 	print string
 	print string.split("two", 1)
 

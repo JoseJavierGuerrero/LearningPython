@@ -2,7 +2,8 @@
 # encoding: utf-8
 
 def helloTuples():
-	"""Basic operations with a dictionary
+	"""Basic operations to a tuple
+
 	
 	Returns None.
 	"""

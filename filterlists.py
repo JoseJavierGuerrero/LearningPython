@@ -1,21 +1,14 @@
 #!/usr/bin/env python
 # encoding: utf-8
 
-def map(function, list, condition=True):
-	""" Maps function to each element in list if condition is True
-	
-	
-	Returns list.
+
+def map(function, list, condition=lambda x: True):
 	"""
-	return [function(element) for element in list if condition]
+	Aplies function to each element of list if they satisfy the condition.
 	
-def filter(filter,list):  
-	""" Filters list to another list with all elements from list wich 
-	filter(element) is True
-	
-	Returns list. 
+	Returns a filtered list with function aplied to all elements.
 	"""
-	return [elem for elem in list if filter(elem)]
+	return [function(element) for element in list if condition(element)]
 
 
 if __name__ == '__main__':
@@ -29,7 +22,7 @@ if __name__ == '__main__':
 	from math import factorial
 	factorialList = map(factorial, numberList)
 	print factorialList
-	print 'Multiples of four?'
-	multiplesOfFour = filter(lambda x: x%4 == 0, factorialList)
-	print multiplesOfFour
-	
+	print 'Let\'s take those wich are greater than 3'
+	greaterThan3List = map(lambda x:x, numberList, lambda x : x > 3)
+	print greaterThan3List
+
