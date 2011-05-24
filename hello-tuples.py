@@ -2,6 +2,10 @@
 # encoding: utf-8
 
 def helloTuples():
+	"""Basic operations with a dictionary
+	
+	Returns None.
+	"""
 	print 'tuple:'
 	tuple = ('one', 'two', 'three', 'four', )
 	print tuple
