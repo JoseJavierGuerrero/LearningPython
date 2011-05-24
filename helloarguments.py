@@ -3,7 +3,7 @@
 
 def person(name='Edgar', age=18):
     """ 
-	Prints a string using "name" and "age".    
+    Prints a string using "name" and "age".    
     
     Returns None.
     """
