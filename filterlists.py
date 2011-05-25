@@ -27,5 +27,5 @@ if __name__ == '__main__':
 	greaterThan3List = map(lambda x:x, numberList, lambda x : x > 3)
 	print greaterThan3List
 	print 'Factorials multiples of four?'
-	multiplesOf4 = map(lambda x:x, factorialList, lambda x : x % 4 == 0)
+	multiplesOf4 = [elem for elem in factorialList if elem % 4 == 0]
 	print multiplesOf4
