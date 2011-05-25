@@ -1,5 +1,5 @@
 class Vehicle():
-	
+    
     """store info of a vehicle"""
 
 
@@ -7,10 +7,9 @@ class Vehicle():
         self.brand = brand
         self.tires = numTires
     
-    def print_vehicle(self):
-        print "Brand =" + str(self.brand) 
-        print "Tires =" + str(self.tires)
-        print
+    def __str__(self):
+        return '\n'.join(["Brand = " + str(self.brand), 
+                          "Tires = " + str(self.tires)]) + '\n'
     
 class Car(Vehicle):
 
@@ -31,8 +30,8 @@ class MotorBike(Vehicle):
 
 if __name__ == "__main__":
     anyCar = Car()
-    anyCar.print_vehicle()
+    print anyCar.__str__()
     aFord = Car("Ford")
-    aFord.print_vehicle()
+    print aFord
     aYamaha = MotorBike("Yamaha")
-    aYamaha.print_vehicle()
+    print str(aYamaha)
