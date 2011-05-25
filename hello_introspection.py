@@ -24,7 +24,7 @@ def info(object):
     except AttributeError:
         docstring = ""
         
-    if docstring != "": 
+    if docstring != "":
         infostring = "\n\n".join([infostring, docstring])
     
     # Extract atribute and method information.
