@@ -50,7 +50,7 @@ class Histogram(collections.Counter):
 
 if __name__=="__main__":
     try:
-        filepath = "/Users/alejandrogomez/Desktop/code/LearningPython/hello_files.py"
+        filepath = "./gpl-3.0.dos.ascii"
         book = Histogram(filepath_=filepath)
         print book
         print "\nThe ten most common words\n"

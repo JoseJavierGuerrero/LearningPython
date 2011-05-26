@@ -33,8 +33,8 @@ def hello_write(file_):
     print file(file_).read()
 
 if __name__ == '__main__':
-	print '>>> file_length(\'/Users/alejandrogomez/Desktop/git.rtf\')'
-	myFile = '/Users/alejandrogomez/Desktop/git.rtf'
+	print '>>> file_length(\'./gpl-3.0.dos.ascii\')'
+	myFile = './gpl-3.0.dos.ascii'
 	l = file_length(myFile)
 	print myFile + ' is ' + str(l) + ' bytes long.'
 	print
