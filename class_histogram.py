@@ -6,17 +6,19 @@ import collections
 import math
 
 class Histogram(collections.Counter):
-    """ stores an histogram with the word frequency of a txt document"""
+    """Stores an histogram with the word frequency of a txt document"""
     
     def __init__(self, filepath_=None, list_=None):
-        """ takes filepath and returns an histogram instance
+        """
+		Takes filepath and returns an histogram instance
         wich represents the frequency of the words in the file at 
         filepath or a list of pairs (word, freq)
         
         If both given dict will be ignored
         
         If no dict is given neither filepath (or it doesn't exists) it raises 
-        an exception"""
+        an exception
+		"""
         
         if filepath_ is not None:
             f = open(filepath_).read()
@@ -33,22 +35,22 @@ class Histogram(collections.Counter):
             
         
     def __str__(self):
-        
-        return '\n'.join([k.ljust(self.longest_word+5) + ": " + '*'*v for (k, v) in self.items() ])
+        return '\n'.join([k.ljust(self.longest_word+5) + ": " + '*'*v 
+							for (k, v) in self.items() ])
 
     def top(self,n):
-        """ returns a new instance with the top n words ordered by frequency"""
+        """Returns a new instance with the top n words ordered by frequency"""
         topn = self.most_common(n)
         return Histogram(list_=topn)
    
     def longer_than(self,n):
-        """ returns a new instance with the words longer than n"""
+        """Returns a new instance with the words longer than n"""
         l = [(k, v) for k, v in self.items() if len(k)>n]
         return Histogram(list_=l)
 
 if __name__=="__main__":
     try:
-        filepath = "/Users/JotaJota/Downloads/about_turtle.txt"
+        filepath = "/Users/alejandrogomez/Desktop/code/LearningPython/hello_files.py"
         book = Histogram(filepath_=filepath)
         print book
         print "\nThe ten most common words\n"
@@ -57,6 +59,3 @@ if __name__=="__main__":
         print book.longer_than(10)
     except IOError: 
         print "Error opening the file %s" % filepath
-
-
-    
