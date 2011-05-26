@@ -23,21 +23,27 @@ class Histogram(collections.Counter):
         if filepath_ is not None:
             f = open(filepath_).read()
             tokens = [elem for elem in f.split() if elem.isalnum()]
-            self.longest_word = reduce(lambda x, y: max(x,len(y)), tokens, 0)
             collections.Counter.__init__(self, tokens)
         elif list_ is not None:
             d={}
             for (k, v) in list_:
                 d[k]=v
-            self.longest_word = reduce(lambda x, y: max(x,len(y)), d.keys(), 0)
             collections.Counter.__init__(self, d)
         else: raise IOError
-            
+        self.longest_word = reduce(lambda x, y: len(x) > len(y) and x or y, self.keys())
+        self.word_count = reduce(lambda n, (k,v): v+n, self.items(), 0)
+        [(k,v)] = self.most_common(1)
+        self.most_frequent = k
         
     def __str__(self):
-        return '\n'.join([k.ljust(self.longest_word+5) + ": " + '*'*v 
-                            for (k, v) in self.items() ])
-
+        string_list = [k.ljust(len(self.longest_word)+5) + ": " + '*'*v 
+                            for (k, v) in self.items() ]
+        twords = "Total words: %d" % self.word_count
+        lword = "Longest word: %s, %d characters" % (self.longest_word,len(self.longest_word))
+        mfword = "Most frequent word: %s, %d times " % (self.most_frequent, self[self.most_frequent])
+        string_list.extend([twords,lword,mfword])
+        return '\n'.join(string_list)
+        
    
     def filter(self,filter_):
         """filter an histogram with filter_
@@ -56,7 +62,10 @@ class Histogram(collections.Counter):
         topn = self.most_common(n)
         return Histogram(list_=topn)    
         
-        
+    def starts_with(self,c):
+        """Returns a new instance with the words starting with prefix c"""
+        return self.filter(lambda x: x.startswith(c))
+
         
     
 
@@ -64,11 +73,13 @@ if __name__=="__main__":
     try:
         filepath = "./bible.txt"
         book = Histogram(filepath_=filepath)
-        #print book
+        print book
         print "\nThe ten most common words\n"
-        #print book.top(10)
+        print book.top(10)
         print "\nWords longer than 10"
-        #print book.longer_than(10)
+        print book.longer_than(10)
+        print "\nWords starting with \'lo\'"
+        print book.starts_with("lo")
     except IOError: 
         print "Error opening the file %s" % filepath
 
