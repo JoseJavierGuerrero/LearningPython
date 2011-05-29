@@ -16,6 +16,7 @@ import sys
 
 import urllib
 from sgmllib import SGMLParser
+from pygments import console
 
 _URL_RAE = 'http://buscon.rae.es/draeI/SrvltGUIBusUsual?'
 
@@ -69,10 +70,16 @@ class MeaningLister(SGMLParser):
 		self.store = False
 		self.ref = False
 
+def printMeanings(meanings):
+	i = 1
+	for meaning in meanings:
+		print console.colorize('blue', str(i) + '. ') + formatMeaning(meaning)
+		i += 1
+		
 # TODO
 def formatMeaning(meaning):
 	"""Takes the raw text of the meaning and formats it"""
-	return meaning.capitalize()
+	return meaning.strip(' ').capitalize()
 
 if __name__ == '__main__':
 	argc = len(sys.argv)
@@ -88,11 +95,9 @@ if __name__ == '__main__':
 			htmlSource = sock.read()
 			parser = MeaningLister()
 			parser.feed(htmlSource)
-			
-			meanings = [formatMeaning(meaning) for meaning in parser.meanings]
-			if meanings:
-				print word.capitalize() + ':'
-				print '\n\n'.join(meanings)
+			if parser.meanings:
+				print console.colorize('darkgray', word.capitalize())
+				printMeanings(parser.meanings)
 			else:
 				print 'Cant find any meaning for %s' % word
 			sock.close()
