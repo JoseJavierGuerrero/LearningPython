@@ -19,38 +19,60 @@ from sgmllib import SGMLParser
 
 _URL_RAE = 'http://buscon.rae.es/draeI/SrvltGUIBusUsual?'
 
-class MeaningLister(SGMLParser): 
+class MeaningLister(SGMLParser):
+	
+	"""Stores the meanings (spans with class="eAcep") of the specified SGML"""
+	
 	def reset(self):
 		SGMLParser.reset(self) 
-		self.spans = []
-		self.isMeaning = False
+		self.store = False
+		self.ref = False
+		self.processMoreMeanings = True
 		self.meanings = []
+		
+	def start_a(self, attrs):
+		"""Process a tags in order to stop when meanings end"""
+		vease = [v for k, v in attrs if k == 'title' and v == 'Véase']
+		if vease:
+			self.processMoreMeanings = False
 			
 	def start_span(self, attrs): 
 		"""Procces span tags to find meanings of the word"""
-		meaning = [v for k, v in attrs if k == 'class' and v == 'eAcep'] 
-		if meaning:
-			self.spans.extend(meaning)
-			self.isMeaning = True
-		abbr = [v for k, v in attrs if k == 'class' and v == 'eAbrv']
-		if abbr:
-			self.isMeaning = False
-		etim = [v for k, v in attrs if k == 'class' and v == 'eEtimo']
-		if etim:
-			self.isMeaning = False
+		meaning = [v for k, v in attrs if k == 'class' and v == 'eAcep']
+		ref = [v for k, v in attrs if k == 'class' and v == 'eRefLema' or v == 'eReferencia']
+		complexMeaning = [v for k, v in attrs if k == 'class' and v == 'eFCompleja']
+		if complexMeaning:
+			self.processMoreMeanings = False
+		elif ref:
+			self.ref = True
+		elif meaning:
+			self.store = True
+		else:
+			self.store = False			
 			
-	def end_span(self):
-		self.isMeaning = False
-		
 	def handle_data(self, data):
 		"""Take the raw text of a meaning and store it"""
-		if self.isMeaning:
-			self.meanings.append(data)
+		if self.processMoreMeanings:
+			if self.ref:
+				meaning = ''
+				try:
+					meaning = self.meanings.pop()
+				except IndexError:
+					meaning = data
+				else:
+					meaning += data
+				self.meanings.append(meaning)
+			elif self.store:
+				self.meanings.append(data)
+			
+	def end_span(self):
+		self.store = False
+		self.ref = False
 
 # TODO
 def formatMeaning(meaning):
-	"""Takes the raw text of the meaning and formats it."""
-	return meaning
+	"""Takes the raw text of the meaning and formats it"""
+	return meaning.capitalize()
 
 if __name__ == '__main__':
 	argc = len(sys.argv)
@@ -60,7 +82,8 @@ if __name__ == '__main__':
 			params = urllib.urlencode(	{
 										'TIPO_HTML':2, 
 										'TIPO_BUS':3, 
-										'LEMA': word})
+										'LEMA': word
+										})
 			sock = urllib.urlopen(_URL_RAE + '%s' % params)
 			htmlSource = sock.read()
 			parser = MeaningLister()
