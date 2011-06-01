@@ -1,24 +1,28 @@
 #!/usr/bin/env python
 # encoding: utf-8
-#
-# Copyright (c) 2011 Alejandro Gómez <alejandroogomez@gmail.com>
-# 
-# Licensed under the Apache License, Version 2.0 (the 'License');
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-# 
-#     http://www.apache.org/licenses/LICENSE-2.0
-# 
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an 'AS IS' BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
 
-"""A Python script for using Twitter from the command line."""
+"""
+A Python script for using Twitter from the command line.
 
-__author__ = 'alejandroogomez@gmail.com'
-__version__ = '0.1'
+Uses inspect and sys standard libraries.
+Uses pygment and python-twitter open source libraries.
+
+Usage: tuitpy.py flag [args]
+
+    flag [args]:
+      -dm user text 
+        Send text as a DM to @user.
+      -tl [count] 
+        Show count tweets of your TL.
+      -m [count] 
+        Show count mentions.
+      -t text 
+        Tweet text.
+      -gm [count] 
+        Show count last DMs.
+      -f [count [user]] 
+        Show your last count favorites or user's
+"""
 
 import inspect
 import sys
@@ -36,6 +40,9 @@ _USERNAME = ''                  # don`t include the @, just your user name
 
 # Local constants
 _MAX_ARGS = 4
+
+# Custom output format
+console.codes['yellow_bg'] = '\x1b[43m'
     
 def tweet(text=None):
     """
@@ -47,17 +54,17 @@ def tweet(text=None):
     """
     if text is not None:
         text = str(text)
-        textLength = len(text)
-        if textLength > twitter.CHARACTER_LIMIT:
-            print 'Your tweet is %d characters' % textLength
+        text_length = len(text)
+        if text_length > twitter.CHARACTER_LIMIT:
+            print 'Your tweet is %d characters' % text_length
             return
         status = api.PostUpdate(text)
         print 'Tweet sent!'
-        print formatTweet(status)
+        print format_tweet(status)
     else:
         print 'Usage: %s -t tweet' % sys.argv[0]
     
-def sendMessage(user=None, text=None):
+def send_message(user=None, text=None):
     """
     Sends text as a Direct Message to user.
     
@@ -70,9 +77,9 @@ def sendMessage(user=None, text=None):
     if user and text:
         user = str(user)
         text = str(text)
-        textLength = len(text)
-        if textLength > twitter.CHARACTER_LIMIT:
-            print 'Your message is %d characters' % textLength
+        text_length = len(text)
+        if text_length > twitter.CHARACTER_LIMIT:
+            print 'Your message is %d characters' % text_length
             return
         try:
             status = api.PostDirectMessage(user, text)
@@ -81,11 +88,11 @@ def sendMessage(user=None, text=None):
             print 'Are you sure that %s is a valid username or ID?' % user
         else:
             print 'Message sent!'
-            print formatMessage(status)
+            print format_message(status)
     else:
         print 'Usage: %s -dm user text' % sys.argv[0]
     
-def timeline(count=20):
+def get_timeline(count=20):
     """
     Shows the last count tweets in your TL if it's specified. 
     The last 20 tweets if not.
@@ -104,9 +111,9 @@ def timeline(count=20):
         print 'There is a problem with Twitter'
     else:
         timeline.reverse()
-        print '\n\n'.join([formatTweet(tweet) for tweet in timeline])
+        print '\n\n'.join([format_tweet(tweet) for tweet in timeline])
     
-def mentions(count=20):
+def get_mentions(count=20):
     """
     Shows the last count mentions if it's specified. 
     The last 20 mentions if not.
@@ -124,9 +131,9 @@ def mentions(count=20):
     else:
         mentions = mentions[:count]
         mentions.reverse()
-        print '\n\n'.join([formatTweet(tweet) for tweet in mentions])   
+        print '\n\n'.join([format_tweet(tweet) for tweet in mentions])   
     
-def getMessages(count=20):
+def get_messages(count=20):
     """
     Shows the last count messages if it's specified. 
     The last 20 messages if not.
@@ -144,7 +151,7 @@ def getMessages(count=20):
     else:
         directMessages = directMessages[:count]
         directMessages.reverse()
-        print '\n\n'.join([formatMessage(dm) for dm in directMessages])
+        print '\n\n'.join([format_message(dm) for dm in directMessages])
 
 def favorites(count=20, user=None):
     """
@@ -171,26 +178,28 @@ def favorites(count=20, user=None):
     else:
         favorites = favorites[:count]
         favorites.reverse()
-        print '\n\n'.join([formatTweet(tweet) for tweet in favorites])
+        print '\n\n'.join([format_tweet(tweet) for tweet in favorites])
     
-def formatTweet(status):
+def format_tweet(status):
     user = status.user
     name = console.colorize('red', '@%s' % user.GetScreenName())
     date = console.colorize('blue', '\t\t%s' % status.GetCreatedAt())
-    text = console.colorize('black', '\t%s' % formatText(status.GetText()))
+    text = console.colorize('black', '\t%s' % format_text(status.GetText()))
     return '\n'.join([name + date, text])
     
-def formatMessage(status):
+def format_message(status):
     sender = console.colorize('red', '@%s' % status.GetSenderScreenName())
     recipient = console.colorize('red', '@%s' % status.GetRecipientScreenName())
     date = console.colorize('blue', '\t\t%s' % status.GetCreatedAt())
     arrow = console.colorize('darkgray', ' -> ')
-    text = console.colorize('black', '\t%s' % formatText(status.GetText()))
+    text = console.colorize('black', '\t%s' % format_text(status.GetText()))
     return '\n'.join([sender + arrow + recipient + date, text])
 
-def formatText(text):
-    # TODO
-    return text
+def format_text(text):
+    # Show mentions in a fancy way
+    username = '@%s' % _USERNAME
+    mention = console.colorize('darkgray', username)
+    return text.replace(username, console.colorize('yellow_bg', mention))
     
 def help():
     _flags =    [
@@ -210,11 +219,11 @@ def help():
 # flag: function
 _ARGS = {
         '-help': help,
-        '-dm': sendMessage,
-        '-tl': timeline,
-        '-m': mentions,
+        '-dm': send_message,
+        '-tl': get_timeline,
+        '-m': get_mentions,
         '-t': tweet,
-        '-gm': getMessages,
+        '-gm': get_messages,
         '-f': favorites
         }
 
@@ -234,20 +243,20 @@ if __name__ == '__main__':
             if argspec.defaults is not None:
                 default_args = len(argspec.defaults)
             
-            def validArgNumber(args_):
-                sameArgNumber = args_ == args_num
-                mandatoryArgs = args_num - default_args
-                notFew = sameArgNumber or args_ >= mandatoryArgs 
-                notTooMuch = args_ <= args_num
-                return notFew and notTooMuch
+            def valid_arg_number(args_):
+                same_arg_number = args_ == args_num
+                mandatory_args = args_num - default_args
+                not_few = same_arg_number or args_ >= mandatory_args 
+                not_too_much = args_ <= args_num
+                return not_few and not_too_much
             
             # Call the corresponding function
             function_args = argc - 2
-            if function_args == 2 and validArgNumber(2):
+            if function_args == 2 and valid_arg_number(2):
                 function(sys.argv[2], sys.argv[3])
-            elif function_args == 1 and validArgNumber(1):
+            elif function_args == 1 and valid_arg_number(1):
                 function(sys.argv[2])
-            elif function_args == 0 and validArgNumber(0):
+            elif function_args == 0 and valid_arg_number(0):
                 function()
             else:
                 help()
