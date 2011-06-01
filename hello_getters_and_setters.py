@@ -66,6 +66,6 @@ if __name__ == '__main__':
 	print ">>>del dict_sample['Ran']"
 	del dict_sample['Ran']
 	print
-				print dict_sample
+	print dict_sample
 	print 
 	
