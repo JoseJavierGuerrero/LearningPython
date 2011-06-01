@@ -100,7 +100,6 @@ if __name__ == '__main__':
             html_source = sock.read()
             parser = MeaningLister()
             parser.feed(html_source)
-            parser.meanings = filter(lambda m: m is not '', parser.meanings)
             if parser.meanings:
                 print console.colorize('darkgray', word.capitalize())
                 print_meanings(parser.meanings)
