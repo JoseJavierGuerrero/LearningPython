@@ -1,13 +1,21 @@
 #!/usr/bin/env python
 # encoding: utf-8
 
-"""A script that retrieves definitions of a spanish word from www.rae.es"""
+"""
+A script that retrieves definitions of a spanish word from www.rae.es
+
+Uses sys, urllib and sgmllib from standard libraries.
+Uses pygments open source library.
+
+Usage: rae.py word
+"""
 
 import sys
-
 import urllib
 from sgmllib import SGMLParser
+
 from pygments import console
+
 
 _URL_RAE = 'http://buscon.rae.es/draeI/SrvltGUIBusUsual?'
 
@@ -31,18 +39,16 @@ class MeaningLister(SGMLParser):
             
     def start_span(self, attrs): 
         """Procces span tags to find meanings of the word"""
-        # Check for the starting of a meaning
         newMeaning = attrs.count(('class', 'eOrdenAcepLema'))
-        # Check for the text of a meaning
+        
         meaningText = attrs.count(('class', 'eAcep'))
-        # Check for various elements that appear in a meaning
+        
         abrv = attrs.count(('class', 'eAbrv'))
         abrv += attrs.count(('class', 'eAbrvNoEdit'))
         example = attrs.count(('class', 'eEjemplo'))
         ref = attrs.count(('class', 'eRef'))
         ref += attrs.count(('class', 'eReferencia'))
-        # TODO : store complex meanings
-        # I'm ignoring complex meaning right now
+        
         complexMeaning = attrs.count(('class', 'eFCompleja'))
         
         if newMeaning:
@@ -66,17 +72,17 @@ class MeaningLister(SGMLParser):
         if self.processMoreMeanings:
             if self.processingMeaning:
                 self.currentMeaning += data
-            elif self.processingMeaning and self.currentMeaning is not '':
+            elif self.currentMeaning is not '' and self.processingMeaning:
                 self.processingMeaning = False
                 self.meanings.append(self.currentMeaning)
         elif self.processingMeaning and self.currentMeaning is not '':
             self.meanings.append(self.currentMeaning)
             self.processingMeaning = False
 
-def printMeanings(meanings):
-    print '\n'.join([formatMeaning(meaning) for meaning in meanings])
+def print_meanings(meanings):
+    print '\n'.join([format_meaning(meaning) for meaning in meanings])
 
-def formatMeaning(meaning):
+def format_meaning(meaning):
     """Takes the raw text of the meaning and formats it"""
     return meaning.strip(' \t').capitalize()
 
@@ -91,20 +97,18 @@ if __name__ == '__main__':
                                         'LEMA': word
                                         })
             sock = urllib.urlopen(_URL_RAE + '%s' % params)
+            html_source = sock.read()
+            parser = MeaningLister()
+            parser.feed(html_source)
+            if parser.meanings:
+                print console.colorize('darkgray', word.capitalize())
+                print_meanings(parser.meanings)
+            else:
+                print 'The word "%s" is not in the dictionary' % word
+            sock.close()
         except IOError:
             print 'Cannot get the requested URL'
         except UnicodeDecodeError:
             print 'Decode error'
-        else:
-            htmlSource = sock.read()
-            parser = MeaningLister()
-            parser.feed(htmlSource)
-            if parser.meanings:
-                print console.colorize('darkgray', word.capitalize())
-                printMeanings(parser.meanings)
-            else:
-                print 'The word "%s" is not in the dictionary' % word
-        finally:
-            sock.close()
     else:
         print 'Usage: %s word' % sys.argv[0]
