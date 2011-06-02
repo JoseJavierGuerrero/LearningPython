@@ -87,6 +87,7 @@ def format_meaning(meaning):
     """Takes the raw text of the meaning and formats it"""
     return meaning.strip(' \t').capitalize()
 
+
 if __name__ == '__main__':
     argc = len(sys.argv)
     if argc == 2:

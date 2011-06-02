@@ -152,15 +152,15 @@ def get_messages(count=20):
             Maximum 20.
     """
 
-    directMessages = api.GetDirectMessages()
+    direct_messages = api.GetDirectMessages()
     try:
         count = int(count)
     except ValueError:
         print 'Usage: %s -gm [count]' % sys.argv[0]
     else:
-        directMessages = directMessages[:count]
-        directMessages.reverse()
-        print '\n\n'.join([format_message(dm) for dm in directMessages])
+        direct_messages = direct_messages[:count]
+        direct_messages.reverse()
+        print '\n\n'.join([format_message(dm) for dm in direct_messages])
 
 def favorites(count=20, user=None):
     """
