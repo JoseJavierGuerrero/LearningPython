@@ -28,17 +28,17 @@ def info(object):
         infostring = "\n\n".join([infostring, docstring])
     
     # Extract atribute and method information.
-    atributeInfo = "\n".join([atribute for atribute in atributes])
-    infostring = "\n\n".join([infostring, "ATRIBUTES", atributeInfo])
+    atribute_info = "\n".join([atribute for atribute in atributes])
+    infostring = "\n\n".join([infostring, "ATRIBUTES", atribute_info])
     
-    methodInfo = "\n\n".join([nameAndDoc(object, method) for method in methods])
-    infostring = "\n\n".join([infostring, "METHODS", methodInfo])
+    method_info = "\n\n".join([name_and_doc(object, method) for method in methods])
+    infostring = "\n\n".join([infostring, "METHODS", method_info])
     
     # Show the info.
     os.system('clear')
     print infostring
     
-def nameAndDoc(object, method):
+def name_and_doc(object, method):
     return name(object, method) + doc(object, method)
     
 def name(object, method):

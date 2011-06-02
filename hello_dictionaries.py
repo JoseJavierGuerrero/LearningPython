@@ -1,11 +1,13 @@
 #!/usr/bin/env python
 # encoding: utf-8
 
-def helloDictionaries(param):
-	"""Basic operations with a dictionary
+def hello_dictionaries(param):
+	"""
+	Basic operations with a dictionary
 	
 	Returns None.
 	"""
+	
 	print 'dictionary:'
 	print param
 	print 'add a key-value pair to a dictionary:'
@@ -23,9 +25,10 @@ def helloDictionaries(param):
 	param.clear()
 	print param
 	
+	
 if __name__ == "__main__":
-	myParams = {1:"one", \
+	my_params = {1:"one", \
 				2:"two", \
 				3:"three",
 				}
-	print helloDictionaries(myParams)
+	print hello_dictionaries(my_params)

@@ -1,9 +1,11 @@
 #!/usr/bin/env python
 
 def buildConnectionString(params): 
-    """Build a connection string from a dictionary of parameters.
+    """
+	Build a connection string from a dictionary of parameters.
     
-    Returns string.""" 
+    Returns string.
+	""" 
     
     return ";".join(["%s=%s" % (k, v) for k, v in params.items()])
 

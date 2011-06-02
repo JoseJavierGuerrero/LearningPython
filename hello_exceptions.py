@@ -11,5 +11,6 @@ def open_file(file_):
 	else:
 		print file_ + ' opened succesfully.'
 
+
 if __name__ == '__main__':
 	open_file('/idontexist')

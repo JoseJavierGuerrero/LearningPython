@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # encoding: utf-8
 
+
 """
 A Python script for using Twitter from the command line.
 
@@ -24,11 +25,13 @@ Usage: tuitpy.py flag [args]
         Show your last count favorites or user's
 """
 
+
 import inspect
 import sys
 
 from pygments import console
 import twitter
+
 
 # INSERT YOUR TOKENS HERE:
 # Twitter specific constants
@@ -44,6 +47,7 @@ _MAX_ARGS = 4
 # Custom output format
 console.codes['yellow_bg'] = '\x1b[43m'
     
+
 def tweet(text=None):
     """
     Tweets the specified text from the authenticated user.
@@ -52,6 +56,7 @@ def tweet(text=None):
         text    
             The text of the tweet.
     """
+
     if text is not None:
         text = str(text)
         text_length = len(text)
@@ -74,6 +79,7 @@ def send_message(user=None, text=None):
         text
             The message text to be posted.
     """
+
     if user and text:
         user = str(user)
         text = str(text)
@@ -102,6 +108,7 @@ def get_timeline(count=20):
             Number of tweets to be displayed.
             Maximum 20.
     """
+
     try:
         count = int(count)
         timeline = api.GetFriendsTimeline(_USERNAME, count)
@@ -123,6 +130,7 @@ def get_mentions(count=20):
             Number of tweets to be displayed.
             Maximum 20.
     """
+
     mentions = api.GetMentions()
     try:
         count = int(count)
@@ -143,6 +151,7 @@ def get_messages(count=20):
             Number of messages to be displayed.
             Maximum 20.
     """
+
     directMessages = api.GetDirectMessages()
     try:
         count = int(count)
@@ -165,6 +174,7 @@ def favorites(count=20, user=None):
         user
             The ID or screen name of user whom favorites are fetched.
     """
+
     try:
         count = int(count)
         if user is None:
@@ -215,6 +225,7 @@ def help():
     print 'flag [args]:'
     print '\n'.join(['  ' + flag for flag in _flags])
 
+
 # Dict with following format:
 # flag: function
 _ARGS = {
@@ -226,6 +237,7 @@ _ARGS = {
         '-gm': get_messages,
         '-f': favorites
         }
+
 
 if __name__ == '__main__':
     api = twitter.Api(  _CONSUMER_KEY, _CONSUMER_SECRET,

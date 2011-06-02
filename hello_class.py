@@ -3,10 +3,11 @@
 
 
 class Vehicle(dict):
-    """store info of a vehicle"""
+	
+    """Store info of a vehicle"""
 
     def stripnulls(data): 
-        "strip whitespace and nulls" 
+        "Strip whitespace and nulls" 
         return data.replace("\00", "").strip()
 
     __DATA_FORMAT = { "brand"    : (0,15,stripnulls),
@@ -66,18 +67,18 @@ class Vehicle(dict):
         for attr_ , (start, end, parse_function) in self.__DATA_FORMAT.items():
             getattr(self, 'set_%s' % attr_)(parse_function(values[start:end]))
     
+
 class Car(Vehicle):
+	
+    """Store info of a car"""
 
-    """store info of a car"""
-
-    
     def __init__(self, brand=None):
         Vehicle.__init__(self,brand)
 
-class MotorBike(Vehicle):
 
-    """store info of a motorbike"""
-    
+class MotorBike(Vehicle):
+	
+    """Store info of a motorbike"""
 
     def __init__(self, brand=None):
         Vehicle.__init__(self,brand,2)

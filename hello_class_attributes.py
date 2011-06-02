@@ -7,6 +7,7 @@ class OneMore:
 	def __init__(self):
 		self.__class__.count += 1
 	
+	
 if __name__ == '__main__':
 	print '>>>from hello_class_attributes import OneMore'
 	print '>>>one = OneMore()'

@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # encoding: utf-8
 
+
 """
 A script that retrieves definitions of a spanish word from www.rae.es
 
