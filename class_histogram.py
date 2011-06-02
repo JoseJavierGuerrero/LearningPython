@@ -5,6 +5,7 @@ import os
 import collections
 import math
 
+
 class Histogram(collections.Counter):
     """Stores an histogram with the word frequency of a txt document"""
     
@@ -66,8 +67,6 @@ class Histogram(collections.Counter):
         """Returns a new instance with the words starting with prefix c"""
         return self.filter(lambda x: x.startswith(c))
 
-        
-    
 
 if __name__=="__main__":
     try:

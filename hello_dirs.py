@@ -1,8 +1,10 @@
 #!/usr/bin/env python
 # encoding: utf-8
 
+
 import os
 import glob
+
 
 def dirs_and_files(path_):
     """Prints separately the subdirectories and files of given directory. """

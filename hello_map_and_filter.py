@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 # encoding: utf-8
 
-if __name__ == '__main__':
 
+if __name__ == '__main__':
 	print 'We have a list of numbers:'	
 	number_list = [1, 2, 3, 4, 5]
 	print number_list

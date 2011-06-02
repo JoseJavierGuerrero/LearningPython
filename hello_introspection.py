@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 # encoding: utf-8
 
+
 import os
+
 
 def info(object):
     """Prints methods, atributes and doc strings."""
@@ -47,6 +49,7 @@ def name(object, method):
 def doc(object, method):
     return str(getattr(object, method).__doc__)
     
+
 if __name__ == '__main__':
     info(os)
     #info(1)

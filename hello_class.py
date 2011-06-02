@@ -85,9 +85,9 @@ class MotorBike(Vehicle):
 
 
 if __name__ == "__main__":
-    anyCar = Car()
-    print anyCar.__str__()
-    aFord = Car("Ford")
-    print aFord
-    aYamaha = MotorBike("Yamaha")
-    print str(aYamaha)
+    any_car = Car()
+    print any_car.__str__()
+    a_ford = Car("Ford")
+    print a_ford
+    a_yamaha = MotorBike("Yamaha")
+    print str(a_yamaha)
